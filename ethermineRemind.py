@@ -2,7 +2,6 @@ import os
 import json
 import requests
 import mail
-from wxpy import *
 
 api_url = "https://api.ethermine.org"
 class reminder:
