@@ -1,2 +1,2 @@
-# Hive_os_remind
+# Ethermine_remind
 Remind you that the miner is disconnected at hiveos
