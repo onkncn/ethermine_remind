@@ -25,6 +25,9 @@ class reminder:
     def get_workers_statistics(self):
         res = requests.get(self.url)
         return json.loads(res.content)
+    def send_mail(self,receive,title,text):
+        sender,token = mail.set_mail_sender()
+        mail.mail(sender,token,receive,title,text)
     # 得到上次的数据
     def get_last_res(self):
         if os.path.exists("last.txt"):
@@ -32,6 +35,7 @@ class reminder:
                 last = f.read()
                 return json.loads(last)
         else:
+            self.send_mail("liuzunxiong@qq.com", "初次运行","监控矿机开始运行")
             return None
     # 保存现在的数据
     def save_res(self,res):
@@ -55,10 +59,6 @@ class reminder:
         else:
             print("未出现矿机掉线")
 
-    def send_mail(self,receive,title,text):
-        sender,token = mail.set_mail_sender()
-        mail.mail(sender,token,receive,title,text)
-
 
 
 if __name__ == '__main__':
@@ -68,7 +68,8 @@ if __name__ == '__main__':
     res = r.get_workers_statistics()
     last_res = r.get_last_res()
     r.save_res(res)
-    r.compare(res,last_res)
+    if last_res!=None:
+        r.compare(res,last_res)
 
 
 
