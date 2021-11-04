@@ -24,7 +24,9 @@ class reminder:
         return self.url
     # get请求
     def get_workers_statistics(self):
-        res = requests.get(self.url)
+        proxies = {'https': 'http://127.0.0.1:7890',
+    'http': 'http://127.0.0.1:7890'}
+        res = requests.get(self.url,proxies=proxies)
         return json.loads(res.content)
     def send_mail(self,receive,title,text):
         sender,token = mail.set_mail_sender()
@@ -57,7 +59,7 @@ class reminder:
                 flag = True
                 info += '\n'+last_data[i+j]["worker"]
                 j += 1
-            if ctime>1800:
+            if ctime>1200:
                 flag = True
                 info += "\n矿机："+data[i]["worker"]+" "+time.strftime("%M分钟%S秒",time.localtime(ctime))+"未检测到上线"
         if flag:
