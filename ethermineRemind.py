@@ -71,8 +71,7 @@ if __name__ == '__main__':
     r = reminder()
     r.set_address()
     r.get_workers_statistics_url()
-    #res = r.get_workers_statistics()
-    res = r.get_last_res()
+    res = r.get_workers_statistics()
     last_res = r.get_last_res()
     r.save_res(res)
     if last_res!=None:
