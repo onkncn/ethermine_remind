@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import time
 import mail
 
 api_url = "https://api.ethermine.org"
@@ -43,6 +44,7 @@ class reminder:
             if type(res) == dict:
                 res = json.dumps(res)
             f.write(res)
+
     def compare(self,res,last_res):
         data = res["data"];
         last_data = last_res["data"]
@@ -50,10 +52,14 @@ class reminder:
         info = ""
         j = 0
         for i in range(0,len(data)-1):
+            ctime = data[i]["time"]-data[i]["lastSeen"]
             if data[i]["worker"]!=last_data[i+j]["worker"]:
                 flag = True
                 info += '\n'+last_data[i+j]["worker"]
                 j += 1
+            if ctime>1800:
+                flag = True
+                info += "\n矿机："+data[i]["worker"]+" "+time.strftime("%M分钟%S秒",time.localtime(ctime))+"未检测到上线"
         if flag:
             print(self.send_mail("liuzunxiong@qq.com", "矿机掉线",info))
         else:
@@ -65,7 +71,8 @@ if __name__ == '__main__':
     r = reminder()
     r.set_address()
     r.get_workers_statistics_url()
-    res = r.get_workers_statistics()
+    #res = r.get_workers_statistics()
+    res = r.get_last_res()
     last_res = r.get_last_res()
     r.save_res(res)
     if last_res!=None:
