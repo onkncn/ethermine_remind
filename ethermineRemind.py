@@ -24,9 +24,12 @@ class reminder:
         return self.url
     # get请求
     def get_workers_statistics(self):
-        proxies = {'https': 'http://127.0.0.1:7890',
-    'http': 'http://127.0.0.1:7890'}
-        res = requests.get(self.url,proxies=proxies)
+        try:
+            res = requests.get(self.url)
+        except:
+            proxies = {'https': 'http://127.0.0.1:7890',
+        'http': 'http://127.0.0.1:7890'}
+            res = requests.get(self.url,proxies=proxies)
         return json.loads(res.content)
     def send_mail(self,receive,title,text):
         sender,token = mail.set_mail_sender()
