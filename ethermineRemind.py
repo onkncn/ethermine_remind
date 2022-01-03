@@ -36,8 +36,8 @@ class reminder:
         mail.mail(sender,token,receive,title,text)
     # 得到上次的数据
     def get_last_res(self):
-        if os.path.exists("last.txt"):
-            with open("last.txt", "r") as f:
+        if os.path.exists("last.json"):
+            with open("last.json", "r") as f:
                 last = f.read()
                 return json.loads(last)
         else:
@@ -45,7 +45,7 @@ class reminder:
             return None
     # 保存现在的数据
     def save_res(self,res):
-        with open("last.txt", "w") as f:
+        with open("last.json", "w") as f:
             if type(res) == dict:
                 res = json.dumps(res)
             f.write(res)
@@ -62,7 +62,7 @@ class reminder:
                 flag = True
                 info += '\n'+last_data[i+j]["worker"]
                 j += 1
-            if ctime>1200:
+            if 1200 < ctime <= 1800:
                 flag = True
                 info += "\n矿机："+data[i]["worker"]+" "+time.strftime("%M分钟%S秒",time.localtime(ctime))+"未检测到上线"
         if flag:
